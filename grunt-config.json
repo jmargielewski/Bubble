@@ -1,0 +1,15 @@
+{
+  "crawl": false,
+  "customTests": [],
+  "dest": "/PATH/TO/modernizr-output.js",
+  "tests": [
+    "audio",
+    "canvas",
+    "csstransitions"
+  ],
+  "options": [
+    "prefixed",
+    "setClasses"
+  ],
+  "uglify": true
+}

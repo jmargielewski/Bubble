@@ -1,0 +1,12 @@
+{
+  "minify": true,
+  "options": [
+    "prefixed",
+    "setClasses"
+  ],
+  "feature-detects": [
+    "test/audio",
+    "test/canvas",
+    "test/css/transitions"
+  ]
+}

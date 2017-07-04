@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html lang="pl-PL">
+<head>
+    <meta charset="UTF-8">
+    <title>Bubble</title>
+    <link href="css/main.css" rel="stylesheet">
+    <script src="js/jquery-3.2.1.js"></script>
+    <!-- Tutaj podpięcie jQuery dodatkowo gdyż nie działa yepnope -->
+    <script src="js/modernizr.js"></script>
+    <script src="js/game.js"></script>
+    <!-- Tutaj podpięcie game.js dodatkowo gdyż nie działa yepnope -->
+    <script>
+        yepnope([{
+            load: "http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.js",
+            complete: function(){
+                if(!window.jQuery){
+                    yepnope("js/jquery-3.2.1.js");
+                }
+            },
+        },
+        {
+            load: "js/game.js",
+            complete: function(){
+                $(function(){
+                    var game = new BubbleShoot.Game();
+                    game.init();
+                })
+            }
+        }]);
+    </script>
+</head>
+<body>
+    <div id="page">
+        <div id="top_bar"></div>
+        <div id="game"></div>
+        <div id="footer_bar"></div>
+        <div  id ="start_game" class="dialog">
+            <div id="start_game_message">
+                <h2>Rozpocznij nową grę</h2>
+            </div>
+            <div class= "but_start_game button">
+                Nowa Gra
+            </div>
+        </div>
+    </div>
+</body>
+</html>
