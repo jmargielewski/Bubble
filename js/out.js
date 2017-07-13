@@ -67,10 +67,18 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(1);
+module.exports = __webpack_require__(3);
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 
-var _ui = __webpack_require__(1);
+// import {BubbleShoot} from "./ui.js";
 
 $(function () {
 
@@ -78,6 +86,7 @@ $(function () {
 
     BubbleShoot.Game = function ($) {
         var Game = function Game() {
+            var curBubble;
             this.init = function () {
                 $(".but_start_game").bind("click", startGame);
             };
@@ -86,6 +95,10 @@ $(function () {
                 $(".but_start_game").unbind("click");
                 // BubbleShoot.ui.hideDialog();
                 $(".dialog").fadeOut(300);
+                var bubble = BubbleShoot.Bubble.create();
+                bubble.getSprite().addClass("cur_bubble");
+                $("#board").append(bubble.getSprite());
+                return bubble;
             };
         };
         return Game;
@@ -95,31 +108,31 @@ $(function () {
     game.init();
 });
 
-console.log(_ui.BubbleShoot);
-
 /***/ }),
-/* 1 */
+/* 2 */,
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 var BubbleShoot = window.BubbleShoot || {};
-
-BubbleShoot.ui = function ($) {
-    var ui = {
-        init: function init() {},
-        hideDialog: function hideDialog() {
-            $(".dialog").fadeOut(300);
-        }
+BubbleShoot.Bubble = function ($) {
+    var Bubble = function Bubble(sprite) {
+        var that = this;
+        this.getSprite = function () {
+            return sprite;
+        };
     };
-    return ui;
-};
-
-exports.BubbleShoot = BubbleShoot;
+    Bubble.create = function () {
+        var sprite = $(document.createElement("div"));
+        sprite.addClass("bubble");
+        sprite.addClass("bubble_0");
+        var bubble = new Bubble(sprite);
+        return bubble;
+    };
+    return Bubble;
+}(jQuery);
 
 /***/ })
 /******/ ]);

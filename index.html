@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <title>Bubble</title>
     <link href="css/main.css" rel="stylesheet">
+    <link href="css/game.css" rel="stylesheet">
+
     <script src="js/jquery-3.2.1.js"></script>
     <!-- Tutaj podpięcie jQuery dodatkowo gdyż nie działa yepnope -->
     <!-- <script src="js/yepnope-2.0.0.min.js"></script> -->
     <script src="js/modernizr.js"></script>
-    <!-- <script src="./js/ui.js"></script> -->
-
+    <script src="./js/ui.js"></script>
+    <!-- <script src="./js/bubble.js"></script> -->
     <script src="./js/out.js"></script>
 
     <!-- Tutaj podpięcie game.js dodatkowo gdyż nie działa yepnope -->
@@ -36,7 +38,9 @@
 <body>
     <div id="page">
         <div id="top_bar"></div>
-        <div id="game"></div>
+        <div id="game">
+            <div id="board"></div>
+        </div>
         <div id="footer_bar"></div>
         <div  id ="start_game" class="dialog">
             <div id="start_game_message">
