@@ -68,6 +68,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(1);
+__webpack_require__(2);
 module.exports = __webpack_require__(3);
 
 
@@ -78,39 +79,53 @@ module.exports = __webpack_require__(3);
 "use strict";
 
 
-// import {BubbleShoot} from "./ui.js";
+var BubbleShoot = window.BubbleShoot || {};
 
-$(function () {
+BubbleShoot.ui = function ($) {
+    var ui = {
+        BUBBLE_DIMS: 44,
+        init: function init() {},
+        hideDialog: function hideDialog() {
+            $(".dialog").fadeOut(300);
+        },
+        getMouseCoords: function getMouseCoords(e) {
+            var coords = { x: e.pageX, y: e.pageY };
+            return coords;
+        },
+        getBubbleCoords: function getBubbleCoords(bubble) {
+            var bubbleCoords = bubble.position();
+            bubbleCoords.left += ui.BUBBLE_DIMS / 2;
+            bubbleCoords.top += ui.BUBBLE_DIMS / 2;
+            return bubbleCoords;
+        },
+        getBubbleAngle: function getBubbleAngle(bubble, e) {
+            var mouseCoords = ui.getMouseCoords(e);
+            var bubbleCoords = ui.get.bubbleCoords(bubble);
+            var gameCoords = $("#game").position();
+            var boardLeft = 120;
+            var angle = Math.atan((mouseCoords.x - bubbleCoords.left - boardLeft)(bubbleCoords.top + gameCoords.top - mouseCoords.y));
+            if (mouseCoords.y > bubbleCoords.top + gameCoords.top) {
+                angle += Math.PI;
+            }
+            return angle;
+        },
+        fireBubble: function fireBubble(bubble, coords, duration) {
+            bubble.getSprite().animate({
+                left: coords.x - ui.BUBBLE_DIMS / 2,
+                top: coords.y - ui.BUBBLE_DIMS / 2
+            }, {
+                duration: duration,
+                easing: "linear"
+            });
+        }
+    };
+    return ui;
+};
 
-    var BubbleShoot = window.BubbleShoot || {};
-
-    BubbleShoot.Game = function ($) {
-        var Game = function Game() {
-            var curBubble;
-            this.init = function () {
-                $(".but_start_game").bind("click", startGame);
-            };
-            var startGame = function startGame() {
-                console.log("hello");
-                $(".but_start_game").unbind("click");
-                // BubbleShoot.ui.hideDialog();
-                $(".dialog").fadeOut(300);
-                var bubble = BubbleShoot.Bubble.create();
-                bubble.getSprite().addClass("cur_bubble");
-                $("#board").append(bubble.getSprite());
-                return bubble;
-            };
-        };
-        return Game;
-    }(jQuery);
-
-    var game = new BubbleShoot.Game();
-    game.init();
-});
+// export { BubbleShoot }
 
 /***/ }),
-/* 2 */,
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -133,6 +148,59 @@ BubbleShoot.Bubble = function ($) {
     };
     return Bubble;
 }(jQuery);
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// import {BubbleShoot} from "./ui.js";
+
+$(function () {
+
+    var BubbleShoot = window.BubbleShoot || {};
+
+    BubbleShoot.Game = function ($) {
+        var Game = function Game() {
+            var curBubble;
+            this.init = function () {
+                $(".but_start_game").bind("click", startGame);
+            };
+            var startGame = function startGame() {
+                $(".but_start_game").unbind("click");
+                // BubbleShoot.ui.hideDialog();
+                $(".dialog").fadeOut(300);
+                curBubble = getNextBubble();
+                $(".game").bind("click", clickGameScreen);
+            };
+            var getNextBubble = function getNextBubble() {
+                var bubble = BubbleShoot.Bubble.create();
+                bubble.getSprite().addClass("cur_bubble");
+                $("#board").append(bubble.getSprite());
+                return bubble;
+            };
+            var clickGameScreen = function clickGameScreen() {
+                var angle = BubbleShoot.ui.getBubbleAngle(curBubble.getSprite(), e);
+                var duration = 750;
+                var distance = 1000;
+                var distX = Math.sin(angle) * distance;
+                var distY = Math.cos(angle) * distance;
+                var bubbleCoords = BubbleShoot.ui.getBubbleCoords(curBubble.getSprite());
+                var coords = {
+                    x: bubbleCoords.left + distX,
+                    y: bubbleCoords.top - distY
+                };
+                BubbleShoot.ui.fireBubble(curBubble, coords, duration);
+            };
+        };
+        return Game;
+    }(jQuery);
+
+    var game = new BubbleShoot.Game();
+    game.init();
+});
 
 /***/ })
 /******/ ]);
